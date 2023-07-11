@@ -18,7 +18,7 @@ if ($_SESSION['user']) {
 </head>
 <body>
 <br>
-<form action="../includes/signin.php" method="post" enctype="multipart/form-data">
+<form action="../php/enter.php" method="post" enctype="multipart/form-data">
     <center><h2 title="Форма регистрации">Вход</h2></center>
     <div class="group">
         <label for="name">Имя:</label>

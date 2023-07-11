@@ -19,7 +19,7 @@ if(isset($_SESSION['user'])) {
 </head>
 <body>
 <br>
-    <form action="includes/register.php" method="post" enctype="multipart/form-data">
+    <form action="php/register.php" method="post" enctype="multipart/form-data">
         <center><h2 title="Форма регистрации">Регистрация</h2></center>
         <div class="group">
             <label for="name">Имя:</label>
@@ -39,7 +39,7 @@ if(isset($_SESSION['user'])) {
             </center>
         </div>
             <center>
-                <div>Уже есть аккаунт? <a href="pages/страница входа.php">Войти</a> </div>
+                <div>Уже есть аккаунт? <a href="pages/sign in.php">Войти</a> </div>
             </center>
             <?php
                 if ($_SESSION['message']) {

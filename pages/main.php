@@ -4,7 +4,7 @@ declare(strict_types = 1);
 session_start();
 
 if(!$_SESSION['user']) {
-    header('Location: ../index.php');
+    header('Location: ../index.classes and functions');
 }
 ?>
 <!DOCKTYPE html>
@@ -19,7 +19,7 @@ if(!$_SESSION['user']) {
     <link rel="stylesheet" href="../css/main.css">
 </head>
 <body>
-    <a href="../includes/logout.php" class="logout">Выход</a>
+    <a href="../php/logout.php" class="logout">Выход</a>
     <?php
         echo '<br>Welcome, ' . $_SESSION['user']['name'] . ' ' . $_SESSION['user']['surname'] . '!';
     ?>
