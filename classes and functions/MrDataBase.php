@@ -9,8 +9,11 @@ class MrDataBase {
 
     public function addUserToUsers(User $user): void {
         $sql = "INSERT INTO users(name, surname, password) 
-            VALUES('$user->name', '$user->surname', '$user->password');";
+            VALUES(:name, :surname, :password);";
         $statement = $this->pdo->prepare($sql);
+        $statement->bindParam(':name', $user->name);
+        $statement->bindParam(':surname', $user->surname);
+        $statement->bindParam(':password', $user->password);
         $statement->execute();
     }
 
