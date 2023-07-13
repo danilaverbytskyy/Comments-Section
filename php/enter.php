@@ -32,6 +32,7 @@ else {
     $_SESSION['user'] = [
         'name' => $user->name,
         'surname' => $user->surname,
+        'password' => $user->password
     ];
     header('Location: ../pages/main.php');
     exit;

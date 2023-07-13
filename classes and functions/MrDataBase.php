@@ -24,7 +24,7 @@ class MrDataBase {
             'name' => $user->name,
             'surname' => $user->surname
         ]);
-        return $statement->fetch() === null;
+        return $statement->fetch() !== false;
     }
 
     public function getUserHashedPassword(User $user): ?string {
@@ -36,5 +36,16 @@ class MrDataBase {
         ]);
         $result = $statement->fetch();
         return $result ? $result['password'] : null;
+    }
+
+    public function getUserId(User $user): ?int {
+        $sql = "SELECT user_id FROM users WHERE name=:name AND surname=:surname";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'name' => $user->name,
+            'surname' => $user->surname
+        ]);
+        $result = $statement->fetch();
+        return $result ? $result['user_id'] : null;
     }
 }

@@ -3,6 +3,9 @@ declare(strict_types = 1);
 
 session_start();
 
+require_once "../classes and functions/User.php";
+require_once "../classes and functions/MrDataBase.php";
+
 if(!$_SESSION['user']) {
     header('Location: ../index.classes and functions');
 }
@@ -21,7 +24,9 @@ if(!$_SESSION['user']) {
 <body>
     <a href="../php/logout.php" class="logout">Выход</a>
     <?php
-        echo '<br>Welcome, ' . $_SESSION['user']['name'] . ' ' . $_SESSION['user']['surname'] . '!';
+        $user = new User($_SESSION['user']['name'], $_SESSION['user']['surname'], $_SESSION['user']['password']);
+        $mrBase = new MrDataBase("localhost", "Comments Section", "root", "");
+        echo $mrBase->getUserId($user);
     ?>
 </body>
 </html>
