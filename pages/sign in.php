@@ -2,7 +2,7 @@
 
 session_start();
 
-if ($_SESSION['user']) {
+if (isset($_SESSION['user'])) {
     header('Location: /pages/main.php');
 }
 ?>
@@ -41,7 +41,7 @@ if ($_SESSION['user']) {
         <div>Еще нет аккаунта? <a href="../index.php">Зарегистрироваться</a> </div>
     </center>
     <?php
-    if ($_SESSION['message']) {
+    if (isset($_SESSION['message'])) {
         echo '<center><p class="msg"> ' . $_SESSION['message'] . ' </p></center>';
     }
     unset($_SESSION['message']);

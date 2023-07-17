@@ -42,7 +42,7 @@ if(isset($_SESSION['user'])) {
                 <div>Уже есть аккаунт? <a href="pages/sign in.php">Войти</a> </div>
             </center>
             <?php
-                if ($_SESSION['message']) {
+                if (isset($_SESSION['message'])) {
                     echo '<center><p class="msg"> ' . $_SESSION['message'] . ' </p></center>';
                 }
                 unset($_SESSION['message']);

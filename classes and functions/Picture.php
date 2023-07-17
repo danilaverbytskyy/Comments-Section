@@ -1,6 +1,7 @@
 <?php
 
 enum Picture: string {
+    case pic0 = '../img/avatars/adele.png';
     case pic1 = '../img/avatars/Link Click Dark Hair.png';
     case pic2 = '../img/avatars/Link Click Blonde Hair.png';
     case pic3 = '../img/avatars/7 sins pig.png';
@@ -21,5 +22,4 @@ enum Picture: string {
     case pic18 = '../img/avatars/june.png';
     case pic19 = '../img/avatars/lepsheev.png';
     case pic20 = '../img/avatars/legs.png';
-    case pic21 = '../img/avatars/adele.png';
 }

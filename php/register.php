@@ -5,7 +5,7 @@ session_start();
 
 require_once "../classes and functions/functions.php";
 require_once "../classes and functions/User.php";
-require_once "../classes and functions/MrDataBase.php";
+require_once "../classes and functions/QueryBuilder.php";
 
 foreach ($_POST as $element) {
     $element = trim(htmlspecialchars($element));
@@ -18,14 +18,15 @@ foreach ($_POST as $element) {
     }
 }
 $user = new User(mb_strtoupper($_POST['name']), mb_strtoupper($_POST['surname']), hashPassword($_POST['password']));
-$mrBase = new MrDataBase("localhost", "Comments Section", "root", "");
+$db = new QueryBuilder("localhost", "Comments Section", "root", "");
 
-if($mrBase->isUserInUsers($user)) {
+$userInformation = $db->getUserFromUsers($user);
+if($db->isUserInUsers($user)) {
     $_SESSION['message'] = "Такой пользователь уже зарегистрирован";
     header('Location: /');
     exit;
 }
-$mrBase->addUserToUsers($user);
+$db->addUserToUsers($user);
 $_SESSION['message'] = "Вы успешно зарегистрировались";
 header('Location: ../pages/sign in.php');
 exit;
