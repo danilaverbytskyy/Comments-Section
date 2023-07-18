@@ -17,16 +17,18 @@ foreach ($_POST as $element) {
         exit;
     }
 }
-$user = new User(mb_strtoupper($_POST['name']), mb_strtoupper($_POST['surname']), hashPassword($_POST['password']));
-$db = new QueryBuilder("localhost", "Comments Section", "root", "");
 
-$userInformation = $db->getUserFromUsers($user);
-if($db->isUserInUsers($user)) {
+$user = new User(mb_strtoupper($_POST['name']), mb_strtoupper($_POST['surname']), hashPassword($_POST['password']));
+$db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
+
+if ($db->isInTable("users", $_POST)) {
     $_SESSION['message'] = "Такой пользователь уже зарегистрирован";
     header('Location: /');
     exit;
 }
-$db->addUserToUsers($user);
-$_SESSION['message'] = "Вы успешно зарегистрировались";
-header('Location: ../pages/sign in.php');
-exit;
+else {
+    $db->store("users", $_POST);
+    $_SESSION['message'] = "Вы успешно зарегистрировались";
+    header('Location: ../pages/sign in.php');
+    exit;
+}

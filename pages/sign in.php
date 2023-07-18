@@ -34,7 +34,7 @@ if (isset($_SESSION['user'])) {
     </div>
     <div class="group">
         <center>
-            <button type="submit" name="go">Войти</button>
+            <button type="submit">Войти</button>
         </center>
     </div>
     <center>

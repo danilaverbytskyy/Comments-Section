@@ -22,7 +22,7 @@ if(!$_SESSION['user']) {
     <link rel="stylesheet" href="../css/main.css">
 </head>
 
-<?php include('../includes/header.php'); ?>
+<?php //include('../includes/header.php'); ?>
 <a href="../php/logout.php">Vihod</a>
 <body>
 

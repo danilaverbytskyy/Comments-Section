@@ -1,42 +1,37 @@
 <?php
-
+declare(strict_types=1);
 class QueryBuilder {
-    public PDO $pdo;
+    private PDO $pdo;
 
-    public function __construct(string $host, string $dbname, string $user, string $password) {
-        $this->pdo = new PDO("mysql:host=$host; dbname=$dbname", "$user", $password);
+    public function __construct(PDO $pdo) {
+        $this->pdo = $pdo;
     }
 
-    public function addUserToUsers(User $user): void {
-        $sql = "INSERT INTO users(name, surname, password) 
-            VALUES(:name, :surname, :password);";
+    public function store(string $table, array $data): void {
+        $keys = array_keys($data);
+        $stringOfKeys = implode(', ', $keys);
+        $placeholders = ':' . implode(', :', $keys);
+        $sql = "INSERT INTO $table($stringOfKeys) VALUES($placeholders);";
         $statement = $this->pdo->prepare($sql);
-        $statement->execute([
-            'name' => $user->name,
-            'surname' => $user->surname,
-            'password' => $user->password
-        ]);
+        $statement->execute($data);
     }
 
-    public function getUserFromUsers(User $user): ?array {
-        $sql = "SELECT * FROM users WHERE name=:name AND surname=:surname";
+    public function getOne(string $table, array $data): ?array {
+        $keys = array_keys($data);
+        $condition="";
+        foreach ($keys as $key) {
+            $condition .= "$key=:$key AND ";
+        }
+        $condition = rtrim($condition, " AND");
+        $sql = "SELECT * FROM $table WHERE $condition";
         $statement = $this->pdo->prepare($sql);
-        $statement->execute([
-            'name' => $user->name,
-            'surname' => $user->surname
-        ]);
+        $statement->execute($data);
         $result = $statement->fetch();
-        return $result ? $result : null;
+        return $result ?: null;
     }
 
-    public function isUserInUsers(User $user): bool {
-        $sql = "SELECT * FROM users WHERE name=:name AND surname=:surname";
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute([
-            'name' => $user->name,
-            'surname' => $user->surname
-        ]);
-        $result = $statement->fetch();
-        return $result !== null;
+    public function isInTable(string $table, array $data): bool {
+        $result = $this->getOne($table, $data);
+        return $result !== false;
     }
 }

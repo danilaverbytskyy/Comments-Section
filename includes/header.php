@@ -9,7 +9,7 @@ require_once "../classes and functions/Picture.php";
 require_once "../classes and functions/Comment.php";
 
 $user = new User($_SESSION['user']['name'], $_SESSION['user']['surname'], $_SESSION['user']['password']);
-$db = new QueryBuilder("localhost", "Comments Section", "root", "");
+$db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
 ?>
 
 <header class="header">
