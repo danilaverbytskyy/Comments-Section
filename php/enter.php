@@ -22,7 +22,7 @@ foreach ($_POST as $element) {
 }
 
 $user = new User(mb_strtoupper($_POST['name']), mb_strtoupper($_POST['surname']), hashPassword($_POST['password']));
-$db = new QueryBuilder("localhost", "Comments Section", "root", "");
+$db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
 
 $userInformation = $db->getUserFromUsers($user);
 echo $userInformation . '<br>';
