@@ -19,23 +19,28 @@ foreach ($_POST as $element) {
         exit;
     }
 }
-$_POST['password'] = hashPassword($_POST['password']);
 
-$user = new User(mb_strtoupper($_POST['name']), mb_strtoupper($_POST['surname']), $_POST['password']);
-$db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
+$user = new User(mb_strtoupper($_POST['name']), mb_strtoupper($_POST['surname']), hashPassword($_POST['password']));
+$db = new QueryBuilder("localhost", "Comments Section", "root", "");
 
-$userInformation = $db->getOne("users", $_POST);
+$userInformation = $db->getUserFromUsers($user);
+echo $userInformation . '<br>';
 if ($user->password === $userInformation['password']) {
     $_SESSION['user'] = [
-        'user_id' => $userInformation['user_id'],
-        'name' => $userInformation['name'],
-        'surname' => $userInformation['surname'],
-        'password' => $userInformation['password']
+        'name' => $user->name,
+        'surname' => $user->surname,
+        'password' => $user->password
     ];
     header('Location: ../pages/main.php');
+    exit;
 }
 else {
-    $_SESSION['message'] = "Нет такого пользователя или неверный пароль";
+    if ($userInformation !== null) {
+        $_SESSION['message'] = "Пароль неверный";
+    }
+    else {
+        $_SESSION['message'] = "Нет такого пользователя";
+    }
     header('Location: ../pages/sign in.php');
+    exit;
 }
-exit;
