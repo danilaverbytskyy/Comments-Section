@@ -10,15 +10,17 @@ require_once "../classes and functions/QueryBuilder.php";
 foreach ($_POST as $element) {
     $element = trim(htmlspecialchars($element));
     $invalidSymbols = "?#<>%^/@ ";
-
     if (strpbrk($element, $invalidSymbols) !== false) {
         $_SESSION['message'] = "Символы \"" . $invalidSymbols . "\" недопустимы";
         header('Location: /');
         exit;
     }
 }
+$_POST['name'] = mb_strtoupper($_POST['name']);
+$_POST['surname'] = mb_strtoupper($_POST['surname']);
+$_POST['password'] = hashPassword($_POST['password']);
 
-$user = new User(mb_strtoupper($_POST['name']), mb_strtoupper($_POST['surname']), hashPassword($_POST['password']));
+$user = new User($_POST['name'], $_POST['surname'], $_POST['password']);
 $db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
 
 if ($db->isInTable("users", $_POST)) {

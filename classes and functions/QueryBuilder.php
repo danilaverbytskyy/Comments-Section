@@ -32,6 +32,6 @@ class QueryBuilder {
 
     public function isInTable(string $table, array $data): bool {
         $result = $this->getOne($table, $data);
-        return $result !== false;
+        return $result !== null;
     }
 }

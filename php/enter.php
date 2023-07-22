@@ -19,12 +19,14 @@ foreach ($_POST as $element) {
         exit;
     }
 }
+$_POST['name'] = mb_strtoupper($_POST['name']);
+$_POST['surname'] = mb_strtoupper($_POST['surname']);
+$_POST['password'] = hashPassword($_POST['password']);
 
-$user = new User(mb_strtoupper($_POST['name']), mb_strtoupper($_POST['surname']), hashPassword($_POST['password']));
-$db = new QueryBuilder("localhost", "Comments Section", "root", "");
+$user = new User($_POST['name'], $_POST['surname'], $_POST['password']);
+$db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
+$userInformation = $db->getOne("users", $_POST);
 
-$userInformation = $db->getUserFromUsers($user);
-echo $userInformation . '<br>';
 if ($user->password === $userInformation['password']) {
     $_SESSION['user'] = [
         'name' => $user->name,
@@ -35,12 +37,7 @@ if ($user->password === $userInformation['password']) {
     exit;
 }
 else {
-    if ($userInformation !== null) {
-        $_SESSION['message'] = "Пароль неверный";
-    }
-    else {
-        $_SESSION['message'] = "Нет такого пользователя";
-    }
+    $_SESSION['message'] = "Пароль неверный или нет такого пользователя";
     header('Location: ../pages/sign in.php');
     exit;
 }
