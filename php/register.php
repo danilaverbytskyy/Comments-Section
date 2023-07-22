@@ -29,7 +29,7 @@ if ($db->isInTable("users", $_POST)) {
     exit;
 }
 else {
-    $db->store("users", $_POST);
+    $db->storeOne("users", $_POST);
     $_SESSION['message'] = "Вы успешно зарегистрировались";
     header('Location: ../pages/sign in.php');
     exit;

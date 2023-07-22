@@ -7,13 +7,17 @@ class QueryBuilder {
         $this->pdo = $pdo;
     }
 
-    public function store(string $table, array $data): void {
+    public function storeOne(string $table, array $data): void {
         $keys = array_keys($data);
         $stringOfKeys = implode(', ', $keys);
         $placeholders = ':' . implode(', :', $keys);
-        $sql = "INSERT INTO $table($stringOfKeys) VALUES($placeholders);";
+        $sql = "INSERT INTO $table($stringOfKeys) VALUES($placeholders) LIMIT 1";
         $statement = $this->pdo->prepare($sql);
         $statement->execute($data);
+    }
+
+    public function deleteById(string $table, int $id): void {
+
     }
 
     public function getOne(string $table, array $data): ?array {
@@ -23,7 +27,7 @@ class QueryBuilder {
             $condition .= "$key=:$key AND ";
         }
         $condition = rtrim($condition, " AND");
-        $sql = "SELECT * FROM $table WHERE $condition";
+        $sql = "SELECT * FROM $table WHERE $condition LIMIT 1";
         $statement = $this->pdo->prepare($sql);
         $statement->execute($data);
         $result = $statement->fetch();
