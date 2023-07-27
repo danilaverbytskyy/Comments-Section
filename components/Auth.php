@@ -24,7 +24,7 @@ class Auth {
         return $db->isInTable($table, $data);
     }
 
-    public function login() {
+    public function login() : void{
 
     }
 
