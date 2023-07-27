@@ -5,7 +5,7 @@ session_start();
 
 require_once "../classes and functions/functions.php";
 require_once "../classes and functions/User.php";
-require_once "../classes and functions/QueryBuilder.php";
+require_once "../database/QueryBuilder.php";
 
 foreach ($_POST as $element) {
     $element = trim(htmlspecialchars($element));
