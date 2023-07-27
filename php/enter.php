@@ -8,8 +8,9 @@ require_once "../classes and functions/User.php";
 require_once "../database/QueryBuilder.php";
 require_once "../components/Auth.php";
 
-$auth = new Auth(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
-if($auth->login($_POST)) {
+$db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
+$auth = new Auth($db);
+if($auth->login("users", $_POST)) {
     $_SESSION['user'] = [
       'name' => $_POST['name'],
       'surname' => $_POST['surname']
