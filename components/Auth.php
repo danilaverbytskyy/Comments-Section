@@ -23,9 +23,6 @@ class Auth {
         return true;
     }
 
-    public function isInTable(string $table, array $data) : bool {
-        return $this->queryBuilder->isInTable($table, $data);
-    }
 
     public function login(array $data) : bool {
         $data = $this->secureInput($data);
@@ -42,8 +39,12 @@ class Auth {
         }
     }
 
-    public function check() {
+    public function isInTable(string $table, array $data) : bool {
+        return $this->queryBuilder->isInTable($table, $data);
+    }
 
+    public function isLoggedIn() : bool {
+        return isset($_SESSION['user']);
     }
 
     public function ban() {
