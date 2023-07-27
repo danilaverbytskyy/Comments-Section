@@ -1,6 +1,11 @@
 <?php
 
 class Auth {
+    private QueryBuilder $queryBuilder;
+
+    public function __construct(PDO $pdo) {
+        $this->queryBuilder = new QueryBuilder($pdo);
+    }
     public function redirect(string $path) : void {
         header("Location: $path");
     }
@@ -10,30 +15,31 @@ class Auth {
         if ($this->isIncludeInvalidSymbols($data)) {
             return false;
         }
-        $db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
+        $data = $this->queryBuilder->convertToDatabaseFormat($data);
         if ($this->isInTable("users", $data)) {
             return false;
         }
-        $db->storeOne("users", $data);
+        $this->queryBuilder->storeOne("users", $data);
         return true;
     }
 
     public function isInTable(string $table, array $data) : bool {
-        $db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
-        $db->convertToDatabaseFormat($data);
-        return $db->isInTable($table, $data);
+        return $this->queryBuilder->isInTable($table, $data);
     }
 
-    public function login() : void{
-
+    public function login(array $data) : bool {
+        $data = $this->secureInput($data);
+        if ($this->isIncludeInvalidSymbols($data)) {
+            return false;
+        }
+        $data = $this->queryBuilder->convertToDatabaseFormat($data);
+        return $this->isInTable("users", $data);
     }
 
-    public function logout() {
-
-    }
-
-    public function currentUser() {
-
+    public function logout() : void {
+        if(isset($_SESSION['user'])) {
+            unset($_SESSION['user']);
+        }
     }
 
     public function check() {
@@ -48,16 +54,18 @@ class Auth {
 
     }
 
-    public function getUserStatus() {
-
-    }
-
     public function isBanned() {
 
     }
 
-    public function getFullName() {
-
+    public function getFullName($data) : ?array {
+        if(isset($data['name']) && isset($data['surname'])) {
+            return [
+                'name' => $data['name'],
+                'surname' => $data['surname']
+            ];
+        }
+        return null;
     }
 
     public function uploadAvatar() {

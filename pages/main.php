@@ -3,13 +3,16 @@ declare(strict_types = 1);
 
 session_start();
 
+require_once "../classes and functions/functions.php";
 require_once "../classes and functions/User.php";
-require_once "../classes and functions/QueryBuilder.php";
+require_once "../database/QueryBuilder.php";
+require_once "../components/Auth.php";
 
-if(!$_SESSION['user']) {
+if($_SESSION['user'] === false) {
     header('Location: ../index.php');
 }
 ?>
+
 <!DOCKTYPE html>
 <html lang="ru">
 <head>

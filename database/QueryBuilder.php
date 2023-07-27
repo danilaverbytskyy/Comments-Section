@@ -17,7 +17,25 @@ class QueryBuilder {
     }
 
     public function deleteById(string $table, int $id): void {
+        $table_id = substr($table, 0, strlen($table)-1);
+        $table_id .= '_id';
+        $sql = "DELETE FROM $table WHERE $table_id=:id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'id' => $id
+        ]);
+    }
 
+    public function getOneById(string $table, int $id): ?array {
+        $table_id = substr($table, 0, strlen($table)-1);
+        $table_id .= '_id';
+        $sql = "SELECT * FROM $table WHERE $table_id=:id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([
+            'id' => $id
+        ]);
+        $result = $statement->fetch();
+        return $result ?: null;
     }
 
     public function getOne(string $table, array $data): ?array {
@@ -41,9 +59,14 @@ class QueryBuilder {
     }
 
     public function convertToDatabaseFormat(array $data) : array {
-        $data['name'] = mb_strtoupper($data['name']);
-        $data['surname'] = mb_strtoupper($data['surname']);
-        $data['password'] = hashPassword($data['password']);
-        return $data;
+        foreach ($data as $key => $value) {
+            if($key === 'password') {
+                $value = hashPassword($value);
+            }
+            else {
+                $value = mb_strtoupper($value);
+            }
+        }
+         return $data;
     }
 }
