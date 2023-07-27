@@ -11,7 +11,7 @@ class QueryBuilder {
         $keys = array_keys($data);
         $stringOfKeys = implode(', ', $keys);
         $placeholders = ':' . implode(', :', $keys);
-        $sql = "INSERT INTO $table($stringOfKeys) VALUES($placeholders) LIMIT 1";
+        $sql = "INSERT INTO $table($stringOfKeys) VALUES($placeholders)";
         $statement = $this->pdo->prepare($sql);
         $statement->execute($data);
     }
@@ -27,7 +27,7 @@ class QueryBuilder {
             $condition .= "$key=:$key AND ";
         }
         $condition = rtrim($condition, " AND");
-        $sql = "SELECT * FROM $table WHERE $condition LIMIT 1";
+        $sql = "SELECT * FROM $table WHERE $condition";
         $statement = $this->pdo->prepare($sql);
         $statement->execute($data);
         $result = $statement->fetch();
@@ -35,7 +35,15 @@ class QueryBuilder {
     }
 
     public function isInTable(string $table, array $data): bool {
+        $data = $this->convertToDatabaseFormat($data);
         $result = $this->getOne($table, $data);
         return $result !== null;
+    }
+
+    public function convertToDatabaseFormat(array $data) : array {
+        $data['name'] = mb_strtoupper($data['name']);
+        $data['surname'] = mb_strtoupper($data['surname']);
+        $data['password'] = hashPassword($data['password']);
+        return $data;
     }
 }

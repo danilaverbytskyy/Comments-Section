@@ -5,32 +5,20 @@ session_start();
 
 require_once "../classes and functions/functions.php";
 require_once "../classes and functions/User.php";
-require_once "../classes and functions/QueryBuilder.php";
+require_once "../database/QueryBuilder.php";
+require_once "../components/Auth.php";
 
-foreach ($_POST as $element) {
-    $element = trim(htmlspecialchars($element));
-    $invalidSymbols = "?#<>%^/@ ";
-    if (strpbrk($element, $invalidSymbols) !== false) {
-        $_SESSION['message'] = "Символы \"" . $invalidSymbols . "\" недопустимы";
-        header('Location: /');
-        exit;
-    }
+$auth = new Auth();
+if($auth->register($_POST)) {
+    $_SESSION['message'] = "Вы успешно зарегистрировались";
+    $auth->redirect("../pages/sign in.php");
 }
-$_POST['name'] = mb_strtoupper($_POST['name']);
-$_POST['surname'] = mb_strtoupper($_POST['surname']);
-$_POST['password'] = hashPassword($_POST['password']);
-
-$user = new User($_POST['name'], $_POST['surname'], $_POST['password']);
-$db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
-
-if ($db->isInTable("users", $_POST)) {
+else if($auth->isInTable("users", $_POST)) {
     $_SESSION['message'] = "Такой пользователь уже зарегистрирован";
-    header('Location: /');
-    exit;
+    $auth->redirect("/");
 }
 else {
-    $db->storeOne("users", $_POST);
-    $_SESSION['message'] = "Вы успешно зарегистрировались";
-    header('Location: ../pages/sign in.php');
-    exit;
+    $_SESSION['message'] = "Вы ввели недопустимые символы";
+    $auth->redirect("/");
 }
+exit;
