@@ -3,8 +3,8 @@
 class Auth {
     private QueryBuilder $queryBuilder;
 
-    public function __construct(PDO $pdo) {
-        $this->queryBuilder = new QueryBuilder($pdo);
+    public function __construct(QueryBuilder $db) {
+        $this->queryBuilder = $db;
     }
     public function redirect(string $path) : void {
         header("Location: $path");
@@ -27,13 +27,13 @@ class Auth {
         return $this->queryBuilder->isInTable($table, $data);
     }
 
-    public function login(array $data) : bool {
+    public function login(string $table, array $data) : bool {
         $data = $this->secureInput($data);
         if ($this->isIncludeInvalidSymbols($data)) {
             return false;
         }
         $data = $this->queryBuilder->convertToDatabaseFormat($data);
-        return $this->isInTable("users", $data);
+        return $this->isInTable($table, $data);
     }
 
     public function logout() : void {

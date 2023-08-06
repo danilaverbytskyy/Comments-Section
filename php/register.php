@@ -8,7 +8,8 @@ require_once "../classes and functions/User.php";
 require_once "../database/QueryBuilder.php";
 require_once "../components/Auth.php";
 
-$auth = new Auth(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
+$db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
+$auth = new Auth($db);
 if($auth->register($_POST)) {
     $_SESSION['message'] = "Вы успешно зарегистрировались";
     $auth->redirect("../pages/sign in.php");
