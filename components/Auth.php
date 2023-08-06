@@ -3,34 +3,37 @@
 class Auth {
     private QueryBuilder $queryBuilder;
 
-    public function __construct(QueryBuilder $db) {
-        $this->queryBuilder = $db;
+    public function __construct(PDO $pdo) {
+        $this->queryBuilder = new QueryBuilder($pdo);
     }
-
     public function redirect(string $path) : void {
         header("Location: $path");
     }
 
-    public function register(string $table, array $data): bool {
+    public function register(array $data): bool {
         $data = $this->secureInput($data);
         if ($this->isIncludeInvalidSymbols($data)) {
             return false;
         }
         $data = $this->queryBuilder->convertToDatabaseFormat($data);
-        if ($this->isInTable($table, $data)) {
+        if ($this->isInTable("users", $data)) {
             return false;
         }
-        $this->queryBuilder->storeOne($table, $data);
+        $this->queryBuilder->storeOne("users", $data);
         return true;
     }
 
-    public function login(string $table, array $data) : bool {
+    public function isInTable(string $table, array $data) : bool {
+        return $this->queryBuilder->isInTable($table, $data);
+    }
+
+    public function login(array $data) : bool {
         $data = $this->secureInput($data);
         if ($this->isIncludeInvalidSymbols($data)) {
             return false;
         }
         $data = $this->queryBuilder->convertToDatabaseFormat($data);
-        return $this->isInTable($table, $data);
+        return $this->isInTable("users", $data);
     }
 
     public function logout() : void {
@@ -39,12 +42,8 @@ class Auth {
         }
     }
 
-    public function isInTable(string $table, array $data) : bool {
-        return $this->queryBuilder->isInTable($table, $data);
-    }
+    public function check() {
 
-    public function isLoggedIn() : bool {
-        return isset($_SESSION['user']);
     }
 
     public function ban() {
