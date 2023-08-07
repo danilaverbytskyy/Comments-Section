@@ -1,10 +1,9 @@
 <?php
-session_start();
 
-require_once "../classes and functions/functions.php";
-require_once "../classes and functions/User.php";
-require_once "../database/QueryBuilder.php";
-require_once "../components/Auth.php";
+use App\Auth;
+use App\QueryBuilder;
+
+session_start();
 
 $db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
 $auth = new Auth($db);

@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 class Auth {
     private QueryBuilder $queryBuilder;
 

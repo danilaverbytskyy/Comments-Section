@@ -1,4 +1,9 @@
 <?php
+
+use App\Auth;
+use App\ImageManager;
+use App\QueryBuilder;
+
 if(!session_start()) {
     session_start();
 }

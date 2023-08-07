@@ -1,6 +1,8 @@
 <?php
 declare(strict_types = 1);
 
+use App\QueryBuilder;
+
 session_start();
 
 require_once "../classes and functions/User.php";

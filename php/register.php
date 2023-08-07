@@ -1,25 +1,32 @@
 <?php
 declare(strict_types=1);
 
-session_start();
+require '../vendor/autoload.php';
 
-require_once "../classes and functions/functions.php";
-require_once "../classes and functions/User.php";
-require_once "../database/QueryBuilder.php";
-require_once "../components/Auth.php";
+use Delight\Auth\Auth;
 
-$db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));
+$db = new PDO("mysql:host=localhost; dbname=Comments Section", "root", "");
 $auth = new Auth($db);
-if($auth->register("users", $_POST)) {
-    $_SESSION['message'] = "Вы успешно зарегистрировались";
-    $auth->redirect("../pages/sign in.php");
+
+try {
+    $userId = $auth->register($_POST['email'], $_POST['password'], $_POST['username'], function ($selector, $token) {
+        echo 'Send ' . $selector . ' and ' . $token . ' to the user (e.g. via email)';
+        echo '  For emails, consider using the mail(...) function, Symfony Mailer, Swiftmailer, PHPMailer, etc.';
+        echo '  For SMS, consider using a third-party service and a compatible SDK';
+    });
+
+    echo 'We have signed up a new user with the ID ' . $userId;
 }
-else if($auth->isInTable("users", $_POST)) {
-    $_SESSION['message'] = "Такой пользователь уже зарегистрирован";
-    $auth->redirect("/");
+catch (\Delight\Auth\InvalidEmailException $e) {
+    echo 'Invalid email address';
 }
-else {
-    $_SESSION['message'] = "Вы ввели недопустимые символы";
-    $auth->redirect("/");
+catch (\Delight\Auth\InvalidPasswordException $e) {
+    echo 'Invalid password';
+}
+catch (\Delight\Auth\UserAlreadyExistsException $e) {
+    echo 'User already exists';
+}
+catch (\Delight\Auth\TooManyRequestsException $e) {
+    echo 'Too many requests';
 }
 exit;

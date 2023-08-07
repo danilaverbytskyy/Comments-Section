@@ -1,5 +1,9 @@
 <?php
-declare(strict_types=1);
+
+namespace App;
+
+use PDO;
+
 class QueryBuilder {
     private PDO $pdo;
 
@@ -67,6 +71,6 @@ class QueryBuilder {
                 $value = mb_strtoupper($value);
             }
         }
-         return $data;
+        return $data;
     }
 }
