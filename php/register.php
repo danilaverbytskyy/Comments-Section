@@ -1,32 +1,29 @@
 <?php
-declare(strict_types=1);
 
 require '../vendor/autoload.php';
+require '../app/QueryBuilder.php';
 
+use App\QueryBuilder;
 use Delight\Auth\Auth;
 
 $db = new PDO("mysql:host=localhost; dbname=Comments Section", "root", "");
+
 $auth = new Auth($db);
-
 try {
-    $userId = $auth->register($_POST['email'], $_POST['password'], $_POST['username'], function ($selector, $token) {
-        echo 'Send ' . $selector . ' and ' . $token . ' to the user (e.g. via email)';
-        echo '  For emails, consider using the mail(...) function, Symfony Mailer, Swiftmailer, PHPMailer, etc.';
-        echo '  For SMS, consider using a third-party service and a compatible SDK';
-    });
-
-    echo 'We have signed up a new user with the ID ' . $userId;
+    $userId = $auth->register($_POST['email'], $_POST['password'], $_POST['nickname']);
+    $_SESSION['message'] = 'Вы успешно зарегистрировались';
 }
 catch (\Delight\Auth\InvalidEmailException $e) {
-    echo 'Invalid email address';
+    $_SESSION['message'] = 'Некорректный адрес почты';
 }
 catch (\Delight\Auth\InvalidPasswordException $e) {
-    echo 'Invalid password';
+    $_SESSION['message'] = 'Некорректный пароль';
 }
 catch (\Delight\Auth\UserAlreadyExistsException $e) {
-    echo 'User already exists';
+    $_SESSION['message'] = 'Такой пользователь уже существует';
 }
 catch (\Delight\Auth\TooManyRequestsException $e) {
-    echo 'Too many requests';
+    $_SESSION['message'] = 'Слишком много запросов';
 }
+header("Location: /");
 exit;

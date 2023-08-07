@@ -22,12 +22,12 @@ if(isset($_SESSION['user'])) {
     <form action="php/register.php" method="post" enctype="multipart/form-data">
         <center><h2 title="Форма регистрации">Регистрация</h2></center>
         <div class="group">
-            <label for="name">Имя:</label>
-            <input id="name" name="name" type="text" required>
+            <label for="nickname">Никнейм:</label>
+            <input id="nickname" name="nickname" type="text" required>
         </div>
         <div class="group">
-            <label for="surname">Фамилия:</label>
-            <input id="surname" name="surname" type="text" required>
+            <label for="email">Почта:</label>
+            <input id="email" name="email" type="text" required>
         </div>
         <div class="group">
             <label for="password">Пароль:</label>
