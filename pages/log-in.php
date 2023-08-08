@@ -1,8 +1,7 @@
 <?php
-
 session_start();
 
-if (isset($_SESSION['user'])) {
+if(isset($_SESSION['user'])) {
     header('Location: /pages/main.php');
 }
 ?>
@@ -11,22 +10,20 @@ if (isset($_SESSION['user'])) {
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Войти</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Вход</title>
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
 <br>
 <form action="../php/enter.php" method="post" enctype="multipart/form-data">
     <center><h2 title="Форма регистрации">Вход</h2></center>
     <div class="group">
-        <label for="name">Имя:</label>
-        <input id="name" name="name" type="text" required>
-    </div>
-    <div class="group">
-        <label for="surname">Фамилия:</label>
-        <input id="surname" name="surname" type="text" required>
+        <label for="email">Почта:</label>
+        <input id="email" name="email" type="text" required>
     </div>
     <div class="group">
         <label for="password">Пароль:</label>
@@ -38,7 +35,7 @@ if (isset($_SESSION['user'])) {
         </center>
     </div>
     <center>
-        <div>Еще нет аккаунта? <a href="../index.php">Зарегистрироваться</a> </div>
+        <div>Еще нет аккаунта? <a href="sign-up.php">Зарегистрироваться</a> </div>
     </center>
     <?php
     if (isset($_SESSION['message'])) {
@@ -49,8 +46,3 @@ if (isset($_SESSION['user'])) {
 </form>
 </body>
 </html>
-
-
-
-
-

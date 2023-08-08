@@ -13,13 +13,13 @@ if(isset($_SESSION['user'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Регистрация</title>
-    <link rel="stylesheet" href="css/bootstrap.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="/css/index.css">
 </head>
 <body>
 <br>
-    <form action="php/register.php" method="post" enctype="multipart/form-data">
+    <form action="../php/register.php" method="post" enctype="multipart/form-data">
         <center><h2 title="Форма регистрации">Регистрация</h2></center>
         <div class="group">
             <label for="nickname">Никнейм:</label>
@@ -39,7 +39,7 @@ if(isset($_SESSION['user'])) {
             </center>
         </div>
             <center>
-                <div>Уже есть аккаунт? <a href="pages/sign in.php">Войти</a> </div>
+                <div>Уже есть аккаунт? <a href="log-in.php">Войти</a> </div>
             </center>
             <?php
                 if (isset($_SESSION['message'])) {

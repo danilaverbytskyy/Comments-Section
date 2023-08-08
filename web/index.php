@@ -21,10 +21,10 @@ $url = $_SERVER['REQUEST_URI'];
 
 //Front Controller
 if($url = '') {
-    require '../index.php';
+    require '../sign-up.php';
 }
 else if ($url='/sign-in') {
-    require '../pages/sign in.php';
+    require '../pages/log-in.php';
 }
 else if ($url = '/main') {
     require '../pages/main.php';
