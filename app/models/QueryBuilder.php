@@ -1,14 +1,14 @@
 <?php
 
-namespace App;
+namespace App\models;
 
 use PDO;
 
 class QueryBuilder {
     private PDO $pdo;
 
-    public function __construct(PDO $pdo) {
-        $this->pdo = $pdo;
+    public function __construct() {
+        $this->pdo = new PDO("mysql:host=localhost; dbname=Comments Section", "root", "");
     }
 
     public function storeOne(string $table, array $data): void {
@@ -21,7 +21,7 @@ class QueryBuilder {
     }
 
     public function deleteById(string $table, int $id): void {
-        $table_id = substr($table, 0, strlen($table)-1);
+        $table_id = substr($table, 0, strlen($table) - 1);
         $table_id .= '_id';
         $sql = "DELETE FROM $table WHERE $table_id=:id";
         $statement = $this->pdo->prepare($sql);
@@ -31,7 +31,7 @@ class QueryBuilder {
     }
 
     public function getOneById(string $table, int $id): ?array {
-        $table_id = substr($table, 0, strlen($table)-1);
+        $table_id = substr($table, 0, strlen($table) - 1);
         $table_id .= '_id';
         $sql = "SELECT * FROM $table WHERE $table_id=:id";
         $statement = $this->pdo->prepare($sql);
@@ -44,7 +44,7 @@ class QueryBuilder {
 
     public function getOne(string $table, array $data): ?array {
         $keys = array_keys($data);
-        $condition="";
+        $condition = "";
         foreach ($keys as $key) {
             $condition .= "$key=:$key AND ";
         }
@@ -62,9 +62,9 @@ class QueryBuilder {
         return $result !== null;
     }
 
-    public function convertToDatabaseFormat(array $data) : array {
+    public function convertToDatabaseFormat(array $data): array {
         foreach ($data as $key => $value) {
-            if($key === 'password') {
+            if ($key === 'password') {
                 $value = hashPassword($value);
             }
             else {

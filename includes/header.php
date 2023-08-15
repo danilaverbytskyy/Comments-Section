@@ -1,14 +1,14 @@
 <?php
 declare(strict_types = 1);
 
-use App\QueryBuilder;
+use app\models\QueryBuilder;
 
 session_start();
 
-require_once "../classes and functions/User.php";
-require_once "../classes and functions/QueryBuilder.php";
-require_once "../classes and functions/Picture.php";
-require_once "../classes and functions/Comment.php";
+require_once "../functions/User.php";
+require_once "../functions/QueryBuilder.php";
+require_once "../functions/Picture.php";
+require_once "../functions/Comment.php";
 
 $user = new User($_SESSION['user']['name'], $_SESSION['user']['surname'], $_SESSION['user']['password']);
 $db = new QueryBuilder(new PDO("mysql:host=localhost; dbname=Comments Section", "root", ""));

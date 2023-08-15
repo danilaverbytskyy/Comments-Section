@@ -1,9 +1,7 @@
 <?php
 
 require '../vendor/autoload.php';
-require '../app/QueryBuilder.php';
 
-use App\QueryBuilder;
 use Delight\Auth\Auth;
 
 $db = new PDO("mysql:host=localhost; dbname=Comments Section", "root", "");

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace app\models;
 
 class Auth {
     private QueryBuilder $queryBuilder;
